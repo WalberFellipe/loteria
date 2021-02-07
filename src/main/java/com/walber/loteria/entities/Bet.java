@@ -1,40 +1,39 @@
 package com.walber.loteria.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class User implements Serializable {
-
+public class Bet implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
-	private String email;
-	private String password;
-
-	@OneToMany(mappedBy = "client")
-	private List<Bet> bets = new ArrayList<>();
-
-	public User() {
-
+	private int betNumber;
+	private Instant betDate;
+	
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private User client;
+	
+	public Bet() {
+		
 	}
 
-	public User(Long id, String name, String email, String password) {
+	public Bet(Long id, int betNumber, Instant betDate, User client) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
+		this.betNumber = betNumber;
+		this.betDate = betDate;
+		this.client = client;
 	}
 
 	public Long getId() {
@@ -45,32 +44,28 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public int getBetNumber() {
+		return betNumber;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBetNumber(int betNumber) {
+		this.betNumber = betNumber;
 	}
 
-	public String getEmail() {
-		return email;
+	public Instant getBetDate() {
+		return betDate;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setBetDate(Instant betDate) {
+		this.betDate = betDate;
 	}
 
-	public String getPassword() {
-		return password;
+	public User getClient() {
+		return client;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<Bet> getBets() {
-		return bets;
+	public void setClient(User client) {
+		this.client = client;
 	}
 
 	@Override
@@ -89,7 +84,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Bet other = (Bet) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -97,5 +92,6 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
-
+	
+	
 }
