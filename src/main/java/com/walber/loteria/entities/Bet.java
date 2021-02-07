@@ -1,97 +1,76 @@
 package com.walber.loteria.entities;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Arrays;
+import java.util.Random;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
+import com.sun.istack.NotNull;
 
 @Entity
-public class Bet implements Serializable{
-	private static final long serialVersionUID = 1L;
-	
+public class Bet implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private int betNumber;
-	private Instant betDate;
-	
-	@ManyToOne
-	@JoinColumn(name = "client_id")
-	private User client;
-	
-	public Bet() {
-		
+
+	/*Validação de email*/
+	@NotNull
+	private String email;
+
+	private int[] numbers;
+
+	/* Getter and Setters */
+	public String getEmail() {
+		return email;
 	}
 
-	public Bet(Long id, int betNumber, Instant betDate, User client) {
-		super();
-		this.id = id;
-		this.betNumber = betNumber;
-		this.betDate = betDate;
-		this.client = client;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public int[] getNumbers() {
+		return numbers;
 	}
 
-	public int getBetNumber() {
-		return betNumber;
+	public void setNumbers(int[] numbers) {
+		this.numbers = numbers;
 	}
 
-	public void setBetNumber(int betNumber) {
-		this.betNumber = betNumber;
-	}
+	public int[] bet(int n) {
+		Random rand = new Random();
+		int[] numbers = new int[n];
+		int turns;
+		Boolean ok = false;
+		while (ok == false) {
+			ok = true;
+			for (int i = 0; i < n; i++) {
+				numbers[i] = rand.nextInt(61);
 
-	public Instant getBetDate() {
-		return betDate;
-	}
+			}
 
-	public void setBetDate(Instant betDate) {
-		this.betDate = betDate;
-	}
+			Arrays.sort(numbers);
 
-	public User getClient() {
-		return client;
+			for (int i = 0; i < numbers.length; i++) {
+				turns = 0;
+				for (int b = 0; b < numbers.length; b++) {
+					if (numbers[i] == numbers[b])
+						turns++;
+					if (numbers[i] == 0)
+						turns = 2;
+				}
+				if (turns > 1)
+					ok = false;
+			}
+		}
+		return numbers;
 	}
-
-	public void setClient(User client) {
-		this.client = client;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Bet other = (Bet) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-	
-	
 }
