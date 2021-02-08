@@ -3,6 +3,7 @@ package com.walber.loteria.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import com.walber.loteria.repositories.BetRepository;
 @RestController
 @RequestMapping(value = "/draw")
 public class BetResource {
-	
+	/*Rota de criação de apostas, após cadastrar o e-mail automaticamente terá uma resposta com os números sorteados pra você e serão armazenados no banco de dados*/
 	@Autowired BetRepository betRepository;
 			@PostMapping("/create")
 			public int[] createBet(@Validated @RequestBody String email) {

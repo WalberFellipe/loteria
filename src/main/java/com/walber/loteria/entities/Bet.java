@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
-import com.sun.istack.NotNull;
 
 @Entity
 public class Bet implements Serializable {
@@ -49,9 +49,9 @@ public class Bet implements Serializable {
 		Random rand = new Random();
 		int[] numbers = new int[n];
 		int turns;
-		Boolean ok = false;
-		while (ok == false) {
-			ok = true;
+		Boolean done = false;
+		while (done == false) {
+			done = true;
 			for (int i = 0; i < n; i++) {
 				numbers[i] = rand.nextInt(61);
 
@@ -61,16 +61,16 @@ public class Bet implements Serializable {
 
 			for (int i = 0; i < numbers.length; i++) {
 				turns = 0;
-				for (int b = 0; b < numbers.length; b++) {
-					if (numbers[i] == numbers[b])
+				for (int a = 0; a < numbers.length; a++) {
+					if (numbers[i] == numbers[a])
 						turns++;
 					if (numbers[i] == 0)
 						turns = 2;
 				}
 				if (turns > 1)
-					ok = false;
+					done = false;
 			}
 		}
-		return numbers;
+		return (numbers);
 	}
 }
